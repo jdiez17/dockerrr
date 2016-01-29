@@ -1,5 +1,8 @@
 FROM base/archlinux
 
+# Copy pacman.conf with multilib enabled
+COPY pacman.conf /etc/pacman.conf
+
 # Update package database
 RUN pacman -Sy
 
@@ -13,6 +16,10 @@ RUN pacman --noconfirm -Su
 RUN pacman-db-upgrade
 
 # Install rr and deps
-COPY rr.pkg.tar.xz /
-RUN pacman --noconfirm -U /rr.pkg.tar.xz
-RUN pacman --noconfirm -S gcc
+RUN yes | pacman -S gcc-multilib cmake gdb git binutils python2-pexpect make pkg-config fakeroot
+COPY rr.tar.gz /tmp
+RUN chown nobody:nobody /tmp/rr.tar.gz
+USER nobody
+RUN cd /tmp && tar -xvzf /tmp/rr.tar.gz && cd /tmp/rr && makepkg
+USER root
+RUN pacman --noconfirm -U /tmp/rr/rr-4.0.3-3-x86_64.pkg.tar.xz
