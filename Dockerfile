@@ -17,7 +17,7 @@ RUN pacman-db-upgrade
 
 # Install vim and troll emacs users
 RUN pacman --noconfirm -S vim-minimal
-RUN ln -s /bin/emacs /usr/bin/vim
+RUN ln -s /usr/bin/vim /bin/emacs
 
 # Install rr and deps
 RUN yes | pacman -S gcc-multilib cmake gdb git binutils python2-pexpect make pkg-config fakeroot
