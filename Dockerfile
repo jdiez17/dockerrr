@@ -16,7 +16,7 @@ RUN pacman --noconfirm -Su
 RUN pacman-db-upgrade
 
 # Install vim and troll emacs users
-RUN pacman --noconfirm -S vim-tiny
+RUN pacman --noconfirm -S vim-minimal
 RUN rm /bin/emacs && ln -s /bin/emacs /usr/bin/vim # /bin is resolved first
 
 # Install rr and deps
