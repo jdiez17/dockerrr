@@ -15,6 +15,10 @@ RUN pacman --noconfirm -Su
 # Upgrade pacman database
 RUN pacman-db-upgrade
 
+# Install vim and troll emacs users
+RUN pacman --noconfirm -S vim-tiny
+RUN rm /bin/emacs && ln -s /bin/emacs /usr/bin/vim # /bin is resolved first
+
 # Install rr and deps
 RUN yes | pacman -S gcc-multilib cmake gdb git binutils python2-pexpect make pkg-config fakeroot
 COPY rr.tar.gz /tmp
@@ -36,8 +40,8 @@ RUN npm install --global babel-cli
 # Install the terminal interface and its deps
 USER run
 WORKDIR /home/run
-RUN git clone https://github.com/jdiez17/serverrr
+RUN git clone https://github.com/jdiez17/serverrr #state
 RUN cd serverrr && npm install
 
 EXPOSE 8081
-#ENTRYPOINT ["babel-node", "/home/run/serverrr/app.js"]
+ENTRYPOINT ["babel-node", "/home/run/serverrr/app.js"]
